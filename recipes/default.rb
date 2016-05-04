@@ -12,27 +12,6 @@ end
 
 node.default['nssm']['install_location'] = '%WINDIR%'
 
-if node['firewall']['allow_consul']
-  include_recipe 'firewall::default'
-
-  # Don't open ports that we've disabled
-  ports = node['consul']['config']['ports'].select { |_name, port| port != -1 }
-
-  firewall_rule 'consul' do
-    protocol :tcp
-    port ports.values
-    action :create
-    command :allow
-  end
-
-  firewall_rule 'consul-udp' do
-    protocol :udp
-    port ports.values_at('serf_lan', 'serf_wan', 'dns')
-    action :create
-    command :allow
-  end
-end
-
 unless windows?
   group node['consul']['service_group'] do
     system true

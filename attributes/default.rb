@@ -30,13 +30,3 @@ default['consul']['diplomat_version'] = nil
 default['consul']['service']['config_dir'] = join_path config_prefix_path, 'conf.d'
 
 default['consul']['version'] = '0.6.4'
-
-# Windows only
-default['consul']['service']['nssm_params'] = {
-  'AppDirectory'     => data_path,
-  'AppStdout'        => join_path(config_prefix_path, 'stdout.log'),
-  'AppStderr'        => join_path(config_prefix_path, 'error.log'),
-  'AppRotateFiles'   => 1,
-  'AppRotateOnline'  => 1,
-  'AppRotateBytes'   => 20_000_000
-}

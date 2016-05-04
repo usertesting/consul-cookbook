@@ -18,21 +18,6 @@ platforms:
   - name: debian-7.9
     run_list:
       - recipe[apt::default]
-  - name: centos-7.2
-    run_list:
-      - recipe[yum::default]
-  - name: centos-6.7
-    run_list:
-      - recipe[yum::default]
-  - name: centos-5.11
-    run_list:
-      - recipe[yum::default]
-  - name: freebsd-10.2
-    run_list:
-      - recipe[freebsd::default]
-  - name: windows-2012r2
-    run_list:
-      - recipe[windows::default]
 
 suites:
   - name: default
@@ -53,8 +38,6 @@ suites:
         config: *default-config
         installation:
           provider: git
-    excludes:
-      - windows-2012r2
   - name: webui
     run_list:
       - recipe[consul::default]
@@ -80,8 +63,3 @@ suites:
           acl_master_token: doublesecret
           acl_datacenter: fortmeade
           acl_default_policy: deny
-    excludes:
-      - windows-2012r2
-      - centos-7.2
-      - centos-6.7
-      - centos-5.11

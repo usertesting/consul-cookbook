@@ -6,12 +6,6 @@
 #
 include_recipe 'chef-sugar::default'
 
-if rhel?
-  include_recipe 'yum-epel::default' if node['platform_version'].to_i == 5
-end
-
-node.default['nssm']['install_location'] = '%WINDIR%'
-
 unless windows?
   group node['consul']['service_group'] do
     system true
@@ -26,10 +20,8 @@ end
 
 service_name = node['consul']['service_name']
 config = consul_config service_name do |r|
-  unless windows?
-    owner node['consul']['service_user']
-    group node['consul']['service_group']
-  end
+  owner node['consul']['service_user']
+  group node['consul']['service_group']
   node['consul']['config'].each_pair { |k, v| r.send(k, v) }
   notifies :reload, "consul_service[#{service_name}]", :delayed
 end
@@ -52,10 +44,9 @@ consul_service service_name do |r|
   config_file config.path
   program install.consul_program
 
-  unless windows?
-    user node['consul']['service_user']
-    group node['consul']['service_group']
-  end
+  user node['consul']['service_user']
+  group node['consul']['service_group']
+
   if node['consul']['service']
     node['consul']['service'].each_pair { |k, v| r.send(k, v) }
   end
